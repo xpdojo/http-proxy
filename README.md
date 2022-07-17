@@ -5,6 +5,12 @@
 - Mail proxy
 - HTTP cache
 
+## Testing config
+
+```sh
+nginx -t
+```
+
 ## 참조
 
 - [NGINX vs. Apache: Our View of a Decade-Old Question](https://www.nginx.com/blog/nginx-vs-apache-our-view/)
