@@ -14,10 +14,12 @@ LoadModule slotmem_shm_module modules/mod_slotmem_shm.so
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{BALANCER_WORKER_ROUTE}e\"" common
 </IfModule>
 
+ProxyHCExpr ok234 {%{REQUEST_STATUS} =~ /^[234]/}
+
 <Proxy "balancer://markruler-cluster">
-    BalancerMember "http://app1:5001" route=app1
-    BalancerMember "http://app2:5002" route=app2
-    BalancerMember "http://app3:5003" route=app3
+    BalancerMember "http://app1:5001" route=app1 hcmethod=HEAD hcexpr=ok234 hcinterval=2
+    BalancerMember "http://app2:5002" route=app2 hcmethod=HEAD hcexpr=ok234 hcinterval=2
+    BalancerMember "http://app3:5003" route=app3 hcmethod=HEAD hcexpr=ok234 hcinterval=2
 </Proxy>
 
 ProxyPass        "/" "balancer://markruler-cluster"
@@ -45,6 +47,18 @@ curl localhost:8080 -i
 192.168.208.1 - - [18/Jul/2022:02:12:34 +0000] "GET / HTTP/1.1" 200 29 "app3"
 ```
 
+### Health Check 테스트
+
+```sh
+docker rm -f app3
+```
+
+![Proxy Error](proxy-error.png)
+
+*헬스체크하는 사이에 접근 시도할 경우 Proxy Error*
+
+- TCP Proxy도 제공되지만 웹 서비스 사용자 입장에선 HTTP 응답이 중요하다.
+
 ## 인스턴스 접근
 
 ```sh
@@ -61,4 +75,6 @@ docker exec -it slb sh
     - [mod_lbmethod_bytraffic](https://httpd.apache.org/docs/trunk/mod/mod_lbmethod_bytraffic.html): Weighted Traffic Counting
     - [mod_lbmethod_bybusyness](https://httpd.apache.org/docs/trunk/mod/mod_lbmethod_bybusyness.html): Pending Request Counting
     - [mod_lbmethod_heartbeat](https://httpd.apache.org/docs/trunk/mod/mod_lbmethod_heartbeat.html): Heartbeat Traffic Counting
+  - [mod_proxy_hcheck]()
+    - [mod_watchdog]()
 - [mod_slotmem_shm](https://httpd.apache.org/docs/trunk/mod/mod_slotmem_shm.html) : Slot-based shared memory provider
