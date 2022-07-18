@@ -4,7 +4,7 @@
 
 ```sh
 # 초기 구성 파일 없음
-# docker run --rm haproxy:2.6.1 ls /usr/local/etc/haproxy/haproxy.cfg > haproxy.cfg.example
+# docker run --rm haproxy:2.6.1 cat /usr/local/etc/haproxy/haproxy.cfg > haproxy.cfg.example
 ```
 
 ## HAProxy statistics report
@@ -30,3 +30,7 @@ frontend markruler
 - [Monitoring HAProxy performance metrics](https://www.datadoghq.com/blog/monitoring-haproxy-performance-metrics/) - Datadog
 - [Circuit Breaking in HAProxy](https://www.haproxy.com/blog/circuit-breaking-haproxy/) - HAProxy
 - [HAProxy Layer 7 Retries and Chaos Engineering](https://www.haproxy.com/blog/haproxy-layer-7-retries-and-chaos-engineering/) - HAProxy
+- [Logging](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/)
+  - [Log with Docker](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-with-docker/)
+  - [Setting Log Levels](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-level-setting/)
+  - [Log Format for Access Logs](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-formats/)
