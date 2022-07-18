@@ -17,7 +17,7 @@ curl localhost:8080 -i
 ### Health Check 테스트
 
 ```sh
-docker rm -f app3
+docker rm -f app2
 
 curl localhost:8080
 ```
