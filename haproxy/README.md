@@ -1,1 +1,28 @@
 # HAProxy
+
+## Configuration
+
+```sh
+# 초기 구성 파일 없음
+# docker run --rm haproxy:2.6.1 ls /usr/local/etc/haproxy/haproxy.cfg > haproxy.cfg.example
+```
+
+## HAProxy statistics report
+
+- [Exploring the HAProxy Stats Page](https://www.haproxy.com/blog/exploring-the-haproxy-stats-page/)
+
+```cfg
+frontend markruler
+  bind *:80
+  default_backend apps
+  stats uri /stats
+  stats refresh 10s
+```
+
+![HAProxy Stats](../images/haproxy/haproxy-stats.png)
+
+*http://localhost:8080/stats*
+
+## 참조
+
+- [HAProxy Configuration Basics: Load Balance Your Servers](https://www.haproxy.com/blog/haproxy-configuration-basics-load-balance-your-servers/)
