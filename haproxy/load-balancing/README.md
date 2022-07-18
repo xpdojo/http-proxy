@@ -14,7 +14,7 @@ curl localhost:8080 -I
 curl localhost:8080 -i
 ```
 
-### Health Check 테스트
+## Health Check 테스트
 
 ```sh
 docker rm -f app2
@@ -46,18 +46,14 @@ endpoint를 IP로 입력하면 헬스체크를 통해 자동으로 다시 연결
 
 ![Up](../../images/haproxy/4-up.png)
 
+### Lifecycle
+
+![Lifecycle](../../images/haproxy/haproxy-health-check.png)
+
+*[Active Health Checks](https://www.haproxy.com/documentation/hapee/2-5r1//load-balancing/health-checking/active-health-checks/) - HAProxy*
+
 ## 인스턴스 접근
 
 ```sh
 docker exec -it slb sh
 ```
-
-## 참조
-
-- [Health checking](https://www.envoyproxy.io/docs/envoy/v1.23.0/intro/arch_overview/upstream/health_checking)
-  - [docs source](https://github.com/envoyproxy/envoy/blob/v1.23.0/docs/root/intro/arch_overview/upstream/health_checking.rst)
-- [Limiting Active Connections](https://www.envoyproxy.io/docs/envoy/v1.23.0/configuration/operations/overload_manager/overload_manager#limiting-active-connections)
-  - `overload.global_downstream_max_connections`
-- [Supported load balancers](https://www.envoyproxy.io/docs/envoy/v1.23.0/intro/arch_overview/upstream/load_balancing/load_balancers)
-  - [Enum config.cluster.v3.Cluster.LbPolicy](https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/cluster/v3/cluster.proto#envoy-v3-api-enum-config-cluster-v3-cluster-lbpolicy)
-  - [load_balancing_policy](https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/cluster/v3/cluster.proto#envoy-v3-api-field-config-cluster-v3-cluster-load-balancing-policy)

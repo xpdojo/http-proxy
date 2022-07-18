@@ -25,4 +25,8 @@ frontend markruler
 
 ## 참조
 
-- [HAProxy Configuration Basics: Load Balance Your Servers](https://www.haproxy.com/blog/haproxy-configuration-basics-load-balance-your-servers/)
+- [HAProxy Configuration Basics: Load Balance Your Servers](https://www.haproxy.com/blog/haproxy-configuration-basics-load-balance-your-servers/) - HAProxy
+- [How to Enable Health Checks in HAProxy](https://www.haproxy.com/blog/how-to-enable-health-checks-in-haproxy/) - HAProxy
+- [Monitoring HAProxy performance metrics](https://www.datadoghq.com/blog/monitoring-haproxy-performance-metrics/) - Datadog
+- [Circuit Breaking in HAProxy](https://www.haproxy.com/blog/circuit-breaking-haproxy/) - HAProxy
+- [HAProxy Layer 7 Retries and Chaos Engineering](https://www.haproxy.com/blog/haproxy-layer-7-retries-and-chaos-engineering/) - HAProxy
