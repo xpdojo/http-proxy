@@ -1,0 +1,105 @@
+admin:
+  address:
+    socket_address:
+      protocol: TCP
+      address: 0.0.0.0
+      port_value: 9901
+
+static_resources:
+  listeners:
+  - name: listener_0
+    address:
+      socket_address:
+        protocol: TCP
+        address: 0.0.0.0
+        port_value: 10000
+    filter_chains:
+    - filters:
+      - name: envoy.filters.network.http_connection_manager
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          scheme_header_transformation:
+            scheme_to_overwrite: https
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/"
+                route:
+                  # host_rewrite_literal: www.envoyproxy.io
+                  cluster: service_envoyproxy_io
+          http_filters:
+          - name: envoy.filters.http.router
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+  # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/cluster/v3/cluster.proto
+  clusters:
+  - name: service_envoyproxy_io
+    connect_timeout: 30s
+    # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/cluster/v3/cluster.proto#enum-config-cluster-v3-cluster-discoverytype
+    # https://www.envoyproxy.io/docs/envoy/v1.23.0/intro/arch_overview/upstream/service_discovery
+    # type: LOGICAL_DNS
+    type: STRICT_DNS
+    # Comment out the following line to test on v6 networks
+    dns_lookup_family: V4_ONLY
+
+    # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/cluster/v3/cluster.proto#enum-config-cluster-v3-cluster-lbpolicy
+    # https://www.envoyproxy.io/docs/envoy/v1.23.0/intro/arch_overview/upstream/load_balancing/load_balancers
+    lb_policy: ROUND_ROBIN # LEAST_REQUEST, RING_HASH, RANDOM, MAGLEV, LOAD_BALANCING_POLICY_CONFIG
+
+    # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/endpoint/v3/endpoint.proto#envoy-v3-api-msg-config-endpoint-v3-clusterloadassignment
+    load_assignment:
+      cluster_name: service_envoyproxy_io
+      # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/endpoint/v3/endpoint_components.proto#envoy-v3-api-msg-config-endpoint-v3-endpoint
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: app1 # service discovery가 있을 경우 자동으로 재연결된다.
+                port_value: 5001
+            # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/endpoint/v3/endpoint_components.proto#config-endpoint-v3-endpoint-healthcheckconfig
+            # This takes into effect only for upstream clusters with active health checking enabled.
+            # [active health checking](https://www.envoyproxy.io/docs/envoy/v1.23.0/intro/arch_overview/upstream/health_checking)
+            health_check_config:
+              port_value: 5001
+          # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/core/v3/health_check.proto#enum-config-core-v3-healthstatus
+          health_status: HEALTHY # UNKNOWN, UNHEALTHY, DRAINING, TIMEOUT, DEGRADED
+        - endpoint:
+            address:
+              socket_address:
+                address: 192.168.0.148 # service discovery가 없을 경우 서비스명으로 설정할 경우 다시 연결할 수 없다.
+                port_value: 5002
+            health_check_config:
+              port_value: 5002
+          health_status: HEALTHY
+        - endpoint:
+            address:
+              socket_address:
+                address: 192.168.0.148
+                port_value: 5003
+            health_check_config:
+              port_value: 5003
+          health_status: HEALTHY
+
+    # https://www.envoyproxy.io/docs/envoy/v1.23.0/api-v3/config/core/v3/health_check.proto
+    health_checks:
+      - timeout: 2s
+        interval: 2s
+        unhealthy_threshold: 3
+        healthy_threshold: 1
+        tcp_health_check: {}
+        # event_log_path: "/etc/logs/envoy/health_check.log"
+        no_traffic_healthy_interval: 2s
+        always_log_health_check_failures: true
+
+    # transport_socket:
+    #   name: envoy.transport_sockets.tls
+    #   typed_config:
+    #     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    #     sni: www.envoyproxy.io
