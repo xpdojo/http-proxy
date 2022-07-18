@@ -5,6 +5,13 @@
 - Mail proxy
 - HTTP cache
 
+## Configuration
+
+```sh
+# 초기 구성 파일을 받아서 설정
+docker run --rm nginx:1.23.0 cat /etc/nginx/nginx.conf > nginx.conf.example
+```
+
 ## Testing config
 
 ```sh
