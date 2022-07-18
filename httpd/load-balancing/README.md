@@ -53,9 +53,9 @@ curl localhost:8080 -i
 docker rm -f app3
 ```
 
-![Proxy Error](proxy-error.png)
+![Proxy Error](../../images/httpd-proxy-error.png)
 
-*헬스체크하는 사이에 접근 시도할 경우 Proxy Error*
+*앱을 강제 종료하고 헬스체크하는 사이에 접근 시도할 경우 Proxy Error*
 
 - TCP Proxy도 제공되지만 웹 서비스 사용자 입장에선 HTTP 응답이 중요하다.
 
