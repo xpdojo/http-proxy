@@ -1,0 +1,22 @@
+[http]
+# https://doc.traefik.io/traefik/routing/routers/
+[http.routers]
+[http.routers.my-router]
+rule = "Host(`localhost`)"
+service = "my-service"
+
+[http.services]
+[http.services.my-service.loadBalancer]
+# https://doc.traefik.io/traefik/routing/services/#health-check
+[http.services.my-service.loadBalancer.healthCheck]
+path = "/health"
+scheme = "http"
+interval = "1s"
+timeout = "2s"
+# https://doc.traefik.io/traefik/routing/services/#load-balancing
+[[http.services.my-service.loadBalancer.servers]]
+url = "http://app1:5001"
+[[http.services.my-service.loadBalancer.servers]]
+url = "http://192.168.0.148:5002"
+[[http.services.my-service.loadBalancer.servers]]
+url = "http://192.168.0.148:5003"

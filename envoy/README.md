@@ -11,4 +11,4 @@ docker run --rm envoyproxy/envoy:v1.23.0 cat /etc/envoy/envoy.yaml > envoy.yaml.
 
 - [docs](https://www.envoyproxy.io/docs/envoy/v1.23.0/start/quick-start/admin)
 
-![Envoy admin interface](../images/envoy-admin.png)
+![Envoy admin interface](../images/envoy/envoy-admin.png)

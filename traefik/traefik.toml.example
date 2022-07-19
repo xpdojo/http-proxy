@@ -1,0 +1,19 @@
+[http.services]
+[http.services.app]
+[http.services.app.failover]
+service = "apps"
+fallback = "backup"
+
+[http.services.main]
+[http.services.main.loadBalancer]
+[http.services.main.loadBalancer.healthCheck]
+path = "/health"
+interval = "1s"
+timeout = "3s"
+[[http.services.main.loadBalancer.servers]]
+url = "http://app1/"
+
+[http.services.backup]
+[http.services.backup.loadBalancer]
+[[http.services.backup.loadBalancer.servers]]
+url = "http://app2/"

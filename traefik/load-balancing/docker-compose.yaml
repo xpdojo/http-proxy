@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  app1:
+    image: markruler/nodejs-hello-world
+    labels:
+      - traefik.http.routers.my-router.rule=Host(`app1`)
+    container_name: app1
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      # - NODE_ENV=production
+  app2:
+    image: markruler/nodejs-hello-world
+    labels:
+      - traefik.http.routers.my-router.rule=Host(`app2`)
+    container_name: app2
+    ports:
+      - "5002:5002"
+    environment:
+      - PORT=5002
+  app3:
+    image: markruler/nodejs-hello-world
+    container_name: app3
+    ports:
+      - "5003:5003"
+    environment:
+      - PORT=5003
+
+  slb:
+    image: traefik:v2.8.1
+    container_name: slb
+    command: --providers.docker
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.toml:/etc/traefik/traefik.toml"
+      - "./conf.toml:/etc/traefik/conf.toml"
+    depends_on:
+      - app1
+      - app2
+      - app3

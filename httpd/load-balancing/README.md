@@ -53,7 +53,7 @@ curl localhost:8080 -i
 docker rm -f app3
 ```
 
-![Proxy Error](../../images/httpd-proxy-error.png)
+![Proxy Error](../../images/httpd/httpd-proxy-error.png)
 
 *앱을 강제 종료하고 헬스체크하는 사이에 접근 시도할 경우 Proxy Error*
 

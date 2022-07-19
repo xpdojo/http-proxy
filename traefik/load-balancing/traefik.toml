@@ -1,0 +1,27 @@
+[log]
+level = "DEBUG"
+
+[api]
+insecure = true
+dashboard = true
+
+[ping]
+entryPoint = "my-ep"
+
+# https://doc.traefik.io/traefik/routing/entrypoints/
+[entryPoints]
+[entryPoints.my-ep]
+address = ":80"
+[entryPoints.my-ep.proxyProtocol]
+insecure = true
+
+[providers]
+# https://doc.traefik.io/traefik/routing/providers/docker/
+[providers.docker]
+endpoint = "unix:///var/run/docker.sock"
+exposedByDefault = false
+# https://doc.traefik.io/traefik/providers/file/
+[providers.file]
+directory = "/etc/traefik/"
+fileName = "conf.toml"
+watch = true
