@@ -35,3 +35,9 @@ frontend markruler
   - [Setting Log Levels](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-level-setting/)
   - [Log Format for Access Logs](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-formats/)
 - [How to Map Domain Names to Backend Server Pools with HAProxy](https://www.haproxy.com/blog/how-to-map-domain-names-to-backend-server-pools-with-haproxy/)
+- [Introduction to HAProxy Logging](https://www.haproxy.com/blog/introduction-to-haproxy-logging/)
+  - [mminks/haproxy-docker-logging](https://github.com/mminks/haproxy-docker-logging)
+  - CentOS 7에서는 동작하는데 Fedora 35에서는 동작하지 않는다. (원인 모름)
+    ```sh
+    rsyslog startup failure, child did not respond within startup timeout
+    ```

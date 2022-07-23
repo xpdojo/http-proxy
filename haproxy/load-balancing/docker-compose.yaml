@@ -28,7 +28,7 @@ services:
     image: haproxy:2.6.1-alpine
     container_name: slb
     ports:
-      - "8080:80"
+      - "80:80"
       - "8404:8404"
     volumes:
       - './haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg'

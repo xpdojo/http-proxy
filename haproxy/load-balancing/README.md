@@ -3,7 +3,8 @@
 ## 실행
 
 ```sh
-docker-compose up
+# docker-compose up --build -d
+docker-compose up -d
 ```
 
 ```sh
