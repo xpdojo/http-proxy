@@ -34,3 +34,4 @@ frontend markruler
   - [Log with Docker](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-with-docker/)
   - [Setting Log Levels](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-level-setting/)
   - [Log Format for Access Logs](https://www.haproxy.com/documentation/hapee/2-5r1/observability/logging/log-formats/)
+- [How to Map Domain Names to Backend Server Pools with HAProxy](https://www.haproxy.com/blog/how-to-map-domain-names-to-backend-server-pools-with-haproxy/)
