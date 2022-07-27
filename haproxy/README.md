@@ -19,6 +19,23 @@ frontend markruler
   stats refresh 10s
 ```
 
+- CentOS7에서 80번 포트를 바인딩하려면 에러가 발생한다.
+
+```sh
+[NOTICE]   (1) : haproxy version is 2.6.1-f6ca66d
+[ALERT]    (1) : Binding [/usr/local/etc/haproxy/haproxy.cfg:29] for frontend proxy: cannot bind socket (Permission denied) for [0.0.0.0:80]
+[ALERT]    (1) : [haproxy.main()] Some protocols failed to start their listeners! Exiting.
+```
+
+```yaml
+# docker-compose.yaml
+# 사용자를 root로 지정한다.
+user: root
+# 아래 권한을 줘도 똑같이 문제가 발생한다.
+# sysctls:
+#   - net.ipv4.ip_unprivileged_port_start=0
+```
+
 ![HAProxy Stats](../images/haproxy/haproxy-stats.png)
 
 *http://localhost:8080/stats*

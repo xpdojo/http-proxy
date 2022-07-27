@@ -58,3 +58,56 @@ endpoint를 IP로 입력하면 헬스체크를 통해 자동으로 다시 연결
 ```sh
 docker exec -it slb sh
 ```
+
+## 이슈
+
+`option httpchk` 설정 시 기본적으로 `OPTIONS /` 경로로 헬스 체크한다.
+
+```sh
+curl -i -X OPTIONS ${HOST}:${PORT}
+...
+HTTP/1.1 200
+...
+```
+
+HAProxy가
+실행 중인 서버에서도 curl 요청 시 200 응답을 받아서
+문제 없다고 판단하고 실행시켜봤지만 에러가 발생했다.
+
+```sh
+[NOTICE]   (1) : New worker (8) forked
+[NOTICE]   (1) : Loading success.
+Server be_server/s1 is DOWN, reason: Layer7 wrong status, code: 500, check duration: 4ms. 1 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[WARNING]  (8) : Server be_server/s1 is DOWN, reason: Layer7 wrong status, code: 500, check duration: 4ms. 1 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[WARNING]  (8) : Server be_server/s2 is DOWN, reason: Layer7 wrong status, code: 500, check duration: 3ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[ALERT]    (8) : backend 'be_server' has no server available!
+Server be_server/s2 is DOWN, reason: Layer7 wrong status, code: 500, check duration: 3ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+backend be_server has no server available!
+```
+
+문제는 Application 서버인 Tomcat에서 발생했다.
+Servlet Filter에서 예외가 발생하다보니 Tomcat의 `localhost.log` 에 남았었다.
+
+```sh
+27-Jul-2022 16:27:18.313 심각 [http-nio-8090-exec-3] org.apache.catalina.core.StandardWrapperValve.invoke Servlet.service() for servlet [spring-web] in context with path [] threw exception
+  java.lang.NullPointerException
+    at com.autowini.m.common.security.filter.CustomRequestFilter.doFilterInternal(CustomRequestFilter.java:64)
+    ...
+```
+
+그 다음으로는 Timeout이 발생했다.
+
+```sh
+[WARNING]  (8) : Server be_server/s1 is DOWN, reason: Layer7 timeout, check duration: 2001ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+```
+
+왜 2001ms 타임아웃이 발생했는지 아직 모르겠다.
+아래는 실행시켰을때 기준 설정값이다.
+
+```conf
+defaults
+  timeout client 10s
+  timeout connect 5s
+  timeout server 10s
+  timeout http-request 10s
+```

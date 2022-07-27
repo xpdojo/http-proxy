@@ -30,6 +30,7 @@ services:
     ports:
       - "80:80"
       - "8404:8404"
+    user: root
     volumes:
       - './haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg'
     depends_on:
