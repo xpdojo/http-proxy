@@ -1,5 +1,15 @@
 # Load Balancing
 
+- [Load Balancing](#load-balancing)
+  - [실행](#실행)
+  - [Health Check 테스트](#health-check-테스트)
+    - [Lifecycle](#lifecycle)
+  - [인스턴스 접근](#인스턴스-접근)
+  - [이슈](#이슈)
+    - [Layer4 connection problem](#layer4-connection-problem)
+    - [Layer7 timeout](#layer7-timeout)
+    - [Layer7 wrong status](#layer7-wrong-status)
+
 ## 실행
 
 ```sh
@@ -61,6 +71,40 @@ docker exec -it slb sh
 
 ## 이슈
 
+### Layer4 connection problem
+
+```sh
+reason: Layer4 connection problem, info: "Host is unreachable at initial connection step of tcp-check", check duration: 3027ms.
+```
+
+```sh
+> iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+> iptables -nvL
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            state NEW tcp dpt:8080
+```
+
+### Layer7 timeout
+
+```sh
+reason: Layer7 timeout, check duration: 2001ms.
+```
+
+왜 2001ms 타임아웃이 발생했는지 아직 모르겠다.
+아래는 실행시켰을때 기준 설정값이다.
+재시작하니까 발생하지 않았다.
+일시적인 문제일 수도 있다.
+
+```conf
+defaults
+  timeout client 10s
+  timeout connect 5s
+  timeout server 10s
+  timeout http-request 10s
+```
+
+### Layer7 wrong status
+
 `option httpchk` 설정 시 기본적으로 `OPTIONS /` 경로로 헬스 체크한다.
 
 ```sh
@@ -93,36 +137,4 @@ Servlet Filter에서 예외가 발생하다보니 Tomcat의 `localhost.log` 에 
   java.lang.NullPointerException
     at com.autowini.m.common.security.filter.CustomRequestFilter.doFilterInternal(CustomRequestFilter.java:64)
     ...
-```
-
-### Layer4 connection problem
-
-```sh
-reason: Layer4 connection problem, info: "Host is unreachable at initial connection step of tcp-check", check duration: 3027ms.
-```
-
-```sh
-> iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
-> iptables -nvL
-Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
-    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            state NEW tcp dpt:8080
-```
-
-### Layer7 timeout
-
-```sh
-reason: Layer7 timeout, check duration: 2001ms.
-```
-
-왜 2001ms 타임아웃이 발생했는지 아직 모르겠다.
-아래는 실행시켰을때 기준 설정값이다.
-재시작하니까 발생하지 않았다.
-일시적인 문제일 수도 있다.
-
-```conf
-defaults
-  timeout client 10s
-  timeout connect 5s
-  timeout server 10s
-  timeout http-request 10s
 ```
