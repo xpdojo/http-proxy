@@ -95,14 +95,29 @@ Servlet Filter에서 예외가 발생하다보니 Tomcat의 `localhost.log` 에 
     ...
 ```
 
-그 다음으로는 Timeout이 발생했다.
+### Layer4 connection problem
 
 ```sh
-[WARNING]  (8) : Server be_server/s1 is DOWN, reason: Layer7 timeout, check duration: 2001ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+reason: Layer4 connection problem, info: "Host is unreachable at initial connection step of tcp-check", check duration: 3027ms.
+```
+
+```sh
+> iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+> iptables -nvL
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            state NEW tcp dpt:8080
+```
+
+### Layer7 timeout
+
+```sh
+reason: Layer7 timeout, check duration: 2001ms.
 ```
 
 왜 2001ms 타임아웃이 발생했는지 아직 모르겠다.
 아래는 실행시켰을때 기준 설정값이다.
+재시작하니까 발생하지 않았다.
+일시적인 문제일 수도 있다.
 
 ```conf
 defaults
