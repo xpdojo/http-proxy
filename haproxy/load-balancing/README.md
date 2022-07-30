@@ -10,6 +10,7 @@
     - [Layer7 timeout](#layer7-timeout)
     - [Layer7 wrong status](#layer7-wrong-status)
     - [Proxy Protocol](#proxy-protocol)
+  - [참조](#참조)
 
 ## 실행
 
@@ -75,7 +76,7 @@ docker exec -it slb sh
 ### Layer4 connection problem
 
 ```sh
-reason: Layer4 connection problem, info: "Host is unreachable at initial connection step of tcp-check", check duration: 3027ms.
+reason: Layer4 connection problem, info: "Host is unreachable", check duration: 1002ms.
 ```
 
 ```sh
@@ -151,3 +152,7 @@ bind :80 accept-proxy
 ```sh
 Received something which does not look like a PROXY protocol header
 ```
+
+## 참조
+
+- [HAPEE-LB: Architecture Guide](https://www.haproxy.com/documentation/hapee/2-5r1/onepage/architecture/)
