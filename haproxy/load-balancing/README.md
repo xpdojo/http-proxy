@@ -9,6 +9,7 @@
     - [Layer4 connection problem](#layer4-connection-problem)
     - [Layer7 timeout](#layer7-timeout)
     - [Layer7 wrong status](#layer7-wrong-status)
+    - [Proxy Protocol](#proxy-protocol)
 
 ## 실행
 
@@ -137,4 +138,16 @@ Servlet Filter에서 예외가 발생하다보니 Tomcat의 `localhost.log` 에 
   java.lang.NullPointerException
     at com.autowini.m.common.security.filter.CustomRequestFilter.doFilterInternal(CustomRequestFilter.java:64)
     ...
+```
+
+### Proxy Protocol
+
+```sh
+bind :80 accept-proxy
+```
+
+아직 구성을 제대로 하지 못했다.
+
+```sh
+Received something which does not look like a PROXY protocol header
 ```

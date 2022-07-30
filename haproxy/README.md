@@ -32,6 +32,7 @@ frontend markruler
 # 사용자를 root로 지정한다.
 user: root
 # 아래 권한을 줘도 똑같이 문제가 발생한다.
+# https://hub.docker.com/_/haproxy
 # sysctls:
 #   - net.ipv4.ip_unprivileged_port_start=0
 ```
@@ -39,6 +40,18 @@ user: root
 ![HAProxy Stats](../images/haproxy/haproxy-stats.png)
 
 *http://localhost:8080/stats*
+
+## Reloading config
+
+[Docker Hub 내용](https://hub.docker.com/_/haproxy)에 따르면 아래 명령어를 실행한다.
+
+```sh
+docker kill -s HUP my-haproxy
+```
+
+```sh
+docker-compose kill -s HUP
+```
 
 ## 참조
 
