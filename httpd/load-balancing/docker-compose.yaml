@@ -31,6 +31,7 @@ services:
       - "8080:80"
     volumes:
       - './httpd.conf:/usr/local/apache2/conf/httpd.conf'
+      # - './vhosts.conf:/usr/local/apache2/conf/vhosts.conf'
     depends_on:
       - app1
       - app2
