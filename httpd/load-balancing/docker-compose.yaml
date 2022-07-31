@@ -32,6 +32,12 @@ services:
     volumes:
       - './httpd.conf:/usr/local/apache2/conf/httpd.conf'
       # - './vhosts.conf:/usr/local/apache2/conf/vhosts.conf'
+      - '/etc/letsencrypt/live/domain1.example.com/cert.pem:/etc/ssl/certs/domain1/cert.pem'
+      - '/etc/letsencrypt/live/domain1.example.com/privkey.pem:/etc/ssl/certs/domain1/privkey.pem'
+      - '/etc/letsencrypt/live/domain1.example.com/chain.pem:/etc/ssl/certs/domain1/chain.pem'
+      - '/etc/letsencrypt/live/domain2.example.com/cert.pem:/etc/ssl/certs/domain2/cert.pem'
+      - '/etc/letsencrypt/live/domain2.example.com/privkey.pem:/etc/ssl/certs/domain2/privkey.pem'
+      - '/etc/letsencrypt/live/domain2.example.com/chain.pem:/etc/ssl/certs/domain2/chain.pem'
     depends_on:
       - app1
       - app2
