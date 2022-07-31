@@ -137,7 +137,6 @@ Servlet Filter에서 예외가 발생하다보니 Tomcat의 `localhost.log` 에 
 ```sh
 27-Jul-2022 16:27:18.313 심각 [http-nio-8090-exec-3] org.apache.catalina.core.StandardWrapperValve.invoke Servlet.service() for servlet [spring-web] in context with path [] threw exception
   java.lang.NullPointerException
-    at com.autowini.m.common.security.filter.CustomRequestFilter.doFilterInternal(CustomRequestFilter.java:64)
     ...
 ```
 
