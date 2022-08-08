@@ -31,6 +31,7 @@ services:
       - "8080:80"
     volumes:
       - './httpd.conf:/usr/local/apache2/conf/httpd.conf'
+      - './ssl_passwd.sh:/usr/local/apache2/ssl_passwd.sh'
       # - './vhosts.conf:/usr/local/apache2/conf/vhosts.conf'
       - '/etc/letsencrypt/live/domain1.example.com/cert.pem:/etc/ssl/certs/domain1/cert.pem'
       - '/etc/letsencrypt/live/domain1.example.com/privkey.pem:/etc/ssl/certs/domain1/privkey.pem'
