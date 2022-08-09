@@ -24,6 +24,8 @@ services:
     environment:
       - PORT=5003
 
+  # Validate `httpd.conf`
+  # sudo docker compose run --rm slb httpd -t
   slb:
     image: httpd:2.4.54-alpine
     container_name: slb
