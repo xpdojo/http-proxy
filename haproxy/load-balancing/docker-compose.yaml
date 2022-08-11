@@ -32,7 +32,7 @@ services:
       - "8404:8404"
     user: root
     volumes:
-      - './haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg'
+      - './haproxy.local.cfg:/usr/local/etc/haproxy/haproxy.cfg'
     depends_on:
       - app1
       - app2
